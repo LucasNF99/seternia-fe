@@ -8,11 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        main: '#261708',
+        silver: '#ACADB2',
+        secondary: '#EB8C2A',
+        tertiary: '#754515',
+        yell: '#FFE663',
+        brown: '#6B3C24'
       },
+      backgroundImage: {
+        'town-hall': "url('/backgrounds/bg-town-hall.png')",
+        'mint': "url('/backgrounds/bg-altar.png')",
+      }
     },
   },
   plugins: [],
