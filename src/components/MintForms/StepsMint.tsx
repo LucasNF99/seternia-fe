@@ -1,7 +1,8 @@
-// StepsBar.js
 import React from 'react';
-
-const StepsMint = ({ currentStep }) => {
+type StepsMintProps = {
+  currentStep: number;
+}
+export function StepsMint({ currentStep }: StepsMintProps) {
   const steps = [' 1', ' 2', ' 3']; // Define your steps here
 
   return (

@@ -52,12 +52,17 @@ export default function MintSection() {
     }
   };
   const handleMint = async () => {
+    console.log(formInfo);
+    if (!wallet || !connection) {
+      console.error("Wallet is not connected");
+      return;
+    }
     if (formInfo.class == undefined || formInfo.race == undefined || formInfo.faction == undefined) {
       console.error('Select all of the previews options')
     } else {
       //try {
       const tx = await MintTx(
-        wallet,
+        wallet, //Cannot read properties of undefined (reading '_bn')	
         connection,
         false,
         new BN(1),

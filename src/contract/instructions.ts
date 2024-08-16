@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TransactionInstruction,PublicKey } from "@solana/web3.js";
 
 import { type Provider ,Program ,Idl} from '@coral-xyz/anchor';

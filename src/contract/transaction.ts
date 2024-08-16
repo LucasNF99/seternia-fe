@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AnchorWallet } from "@solana/wallet-adapter-react"
 import { ComputeBudgetProgram, Connection, PublicKey, SYSVAR_RENT_PUBKEY, SystemProgram, Transaction, sendAndConfirmTransaction } from "@solana/web3.js"
 import { TOKEN_PROGRAM_ID,ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress } from '@solana/spl-token';
@@ -7,12 +8,23 @@ import { active,mint,smint,getProgram, getProgramS } from "./instructions";;
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js"
 import BN from "bn.js";
 import * as anchor from '@project-serum/anchor';
+ import { toast } from 'react-toastify';
+import Link from "next/link";
 const info = {
   TOKEN_METADATA_PROGRAM_ID: new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"),
   RuneKey: new PublicKey("3eDcm2adhJ9KrJtdmh9K6jjoH3UDq2psgWPTcw7fBrZd"),
 }
 
+const CustomToastWithLink = (tx) => (
+  `<div>
+    <Link href='${tx}'>This is a link</Link>
+  </div>`
+);
+
+
 // eslint-disable-next-line react-hooks/rules-of-hooks
+
+
 export const MintTx = async (
   wallet: AnchorWallet,
   connection: Connection,
@@ -31,6 +43,7 @@ export const MintTx = async (
   // set Provider
   const provider = new AnchorProvider(connection,wallet,{});
   setProvider(provider)
+  console.log(provider)
   const program = await getProgram(provider);
 
   const [TreasuryKey,bump] = await PublicKey.findProgramAddress(
@@ -257,136 +270,6 @@ export const MintTx = async (
       }
   return pass
 }
-
-// export const SMintTx = async (
-//   wallet: AnchorWallet,
-//   connection: Connection,
-// ) => {
-//   var pass = false;
-//   // check the connection
-//   if (!wallet.publicKey || !connection) {
-//     console.log("Warning: Wallet not connected")
-//     return
-//   }
-//   // set Provider
-//   const provider = new AnchorProvider(connection,wallet,{});
-//   setProvider(provider)
-//   const program = await getProgramS(provider);
-
-//   const [TreasuryKey,bump] = await PublicKey.findProgramAddress(
-//     [Buffer.from("TRESURE_SEED")],
-//     program.programId
-//   );
-//   const treasury_data = await program.account.treasure.fetch(TreasuryKey) as STreasure;
-//   const id = treasury_data.mints.add(new BN(1));
-
-//   const [CollectionKey] = await PublicKey.findProgramAddress(
-//     [Buffer.from("collection")],
-//     program.programId
-//   );
-//   const [CmetadataAddress] = await PublicKey.findProgramAddress(
-//     [Buffer.from("metadata"),info.TOKEN_METADATA_PROGRAM_ID.toBuffer(),CollectionKey.toBuffer()],
-//     info.TOKEN_METADATA_PROGRAM_ID
-//   );
-//   const [CmasterEdition] = await PublicKey.findProgramAddress(
-//     [
-//       Buffer.from("metadata"),
-//       info.TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-//       CollectionKey.toBuffer(),
-//       Buffer.from("edition")
-//     ],
-//     info.TOKEN_METADATA_PROGRAM_ID
-//   );
-
-//   const [MintKey] = await PublicKey.findProgramAddress(
-//     [Buffer.from("mint"),Buffer.from(id.toArray("le", 8))],
-//     program.programId
-//   );
-//   const [metadataAddress] = await PublicKey.findProgramAddress(
-//     [Buffer.from("metadata"),info.TOKEN_METADATA_PROGRAM_ID.toBuffer(),MintKey.toBuffer()],
-//     info.TOKEN_METADATA_PROGRAM_ID
-//   );
-//   const [masterEdition] = await PublicKey.findProgramAddress(
-//     [
-//       Buffer.from("metadata"),
-//       info.TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-//       MintKey.toBuffer(),
-//       Buffer.from("edition")
-//     ],
-//     info.TOKEN_METADATA_PROGRAM_ID
-//   );
-//   const [delegate] = await PublicKey.findProgramAddress(
-//     [
-//       Buffer.from("metadata"),
-//       info.TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-//       CollectionKey.toBuffer(),
-//       Buffer.from("collection_authority"),
-//       TreasuryKey.toBuffer()
-//     ],
-//     info.TOKEN_METADATA_PROGRAM_ID
-//   );
-//   const MintTokenAccount = await getAssociatedTokenAddress(
-//     MintKey,
-//     wallet.publicKey
-//   );
-//   try {
-//     const tx = new Transaction()
-//     const mint_ix = await smint(
-//       { id,bump },
-//       {
-//         payer:wallet.publicKey,
-//         treasure:TreasuryKey,
-//         mint:MintKey,
-//         collectionMint:CollectionKey,
-//         tokenAccount:MintTokenAccount,
-//         masterEditionAccount:masterEdition,
-//         collectionMasterEdition:CmasterEdition,
-//         nftMetadata:metadataAddress,
-//         collectionMetadata:CmetadataAddress,
-//         delegate:delegate,
-//         associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-//         rent: SYSVAR_RENT_PUBKEY,
-//         systemProgram: SystemProgram.programId,
-//         tokenProgram: TOKEN_PROGRAM_ID,
-//         metadataProgram: info.TOKEN_METADATA_PROGRAM_ID,
-//       },
-//       provider
-//     );
-//     let cump_limit = ComputeBudgetProgram.setComputeUnitLimit({ units: 800_000 });
-//     tx.add(mint_ix).add(cump_limit);
-//     try {
-//       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
-//       tx.feePayer = wallet.publicKey
-//       if (wallet.signTransaction) {
-//         const signedTx = await wallet.signTransaction(tx)
-//         const sTx = signedTx.serialize()
-//         const signature = await connection.sendRawTransaction(sTx, { skipPreflight: false })
-
-//         const blockhash = await connection.getLatestBlockhash()
-//         await connection.confirmTransaction({
-//           signature,
-//           blockhash: blockhash.blockhash,
-//           lastValidBlockHeight: blockhash.lastValidBlockHeight
-//         }, "processed");
-//         pass = true;
-//           // alert(`Successfully Mint NFT.\n Signature: ${signature}`)
-//             enqueueSnackbar(`TX: ${signature}`,{variant: "success"});
-
-//         console.log({
-//           signature,
-//           blockhash,
-//         });
-//       }
-//     } catch (error) {
-//       console.log("Error in Mint NFT trasnaction", error)
-//     }
-//   } catch (error) {
-//     console.log("NFT address is incorrect", error)
-//   }
-//   return pass
-// }
-
-
 
 export const MintUsingBlink  = async (payerPublicKey: PublicKey, connection: Connection) => {
   if (!payerPublicKey || !connection) {
