@@ -249,6 +249,7 @@ export const MintTx = async (
             pass = true;
 
             console.log("Successfully Mint NFT.\n Signature: ", signature);
+            return signature
           }
         } catch (error) {
           console.log("Error in Mint NFT  trasnaction", error)

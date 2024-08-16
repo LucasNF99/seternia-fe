@@ -11,6 +11,7 @@ import { SelectRace } from "@/components/MintForms/SelectRace";
 import { SelectFaction } from "@/components/MintForms/SelectFaction";
 import { createNftAtom } from "@/presentation/atoms/createNftAtom";
 import { MintTx } from "@/contract/transaction";
+import { toast } from "react-toastify";
 
 export default function MintSection() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +29,7 @@ export default function MintSection() {
   }, [pathname]);
 
   const handleClose = () => {
-    router.push('/start');
+    router.push('/');
   };
 
   const handleNext = () => {
@@ -71,7 +72,14 @@ export default function MintSection() {
         new BN(1)
       );
       if (tx) {
-        handleClose()
+        console.log(tx)
+        const explorerUrl = `https://explorer.solana.com/tx/${tx}?cluster=devnet`;
+
+        toast.success(
+          <a href={explorerUrl} className="underline" target="_blank" rel="noopener noreferrer">
+            View transaction
+          </a>
+        );
       } else {
         alert("Error in Mint NFT trasnaction")
       }
