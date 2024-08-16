@@ -7,7 +7,9 @@ import {
 } from '@solana/wallet-adapter-react-ui';
 import React, { useMemo } from "react";
 import { RecoilRoot } from "recoil";
-import { clusterApiUrl } from '@solana/web3.js';
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
+import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare";
+import * as web3 from "@solana/web3.js";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -25,13 +27,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const network = WalletAdapterNetwork.Devnet;
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-  const wallets = useMemo(
-    () => [],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [network]
-  );
+  const endpoint = web3.clusterApiUrl("devnet");
+  const wallets = useMemo(() => [
+    new PhantomWalletAdapter(),
+    new SolflareWalletAdapter()
+  ], []);
   return (
     <html lang="en">
       <RecoilRoot>

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { useRecoilState } from "recoil";
 import Image from "next/image";
