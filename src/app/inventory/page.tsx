@@ -1,3 +1,4 @@
+import InventorySection from "@/components/Inventory/InventorySection";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -5,8 +6,9 @@ export const metadata: Metadata = {
 }
 export default function Inventory() {
   return (
-    <main className="container mx-auto flex flex-1 items-center justify-center">
-      <h1>Building...</h1>
+    <main className="flex flex-1 w-full flex-col items-center py-6 bg-brown">
+      <h1 className="text-3xl mb-6">Your items</h1>
+      <InventorySection />
     </main>
   );
 }

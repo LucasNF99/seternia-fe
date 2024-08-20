@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        hostname: 'aquamarine-elaborate-cuckoo-625.mypinata.cloud',
+      }
+    ]
+  },
+};
 
 export default nextConfig;
