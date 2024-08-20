@@ -35,17 +35,29 @@ export default function InventorySection() {
 
     const data = await Promise.all(
       allNFTs.map(async (nft) => {
-        const response = await fetch(nft.uri);
-        const metadata = await response.json();
-        return {
-          image: metadata.image,
-          name: metadata.name,
-          category: metadata.attributes?.find((attr: { trait_type: string; }) => attr.trait_type === 'Category')?.value || 'Items',
-        };
+        try {
+          const response = await fetch(nft.uri);
+          const contentType = response.headers.get("content-type");
+
+          if (contentType && contentType.includes("application/json")) {
+            const metadata = await response.json();
+            return {
+              image: metadata.image,
+              name: metadata.name,
+              category: metadata.attributes?.find((attr: { trait_type: string }) => attr.trait_type === 'Category')?.value || 'Items',
+            };
+          } else {
+            console.warn(`NFT at ${nft.uri} is not valid JSON`);
+            return null;
+          }
+        } catch (error) {
+          console.error(`Failed to fetch metadata for NFT at ${nft.uri}:`, error);
+          return null;
+        }
       })
     );
 
-    setNftData(data);
+    setNftData(data.filter(item => item !== null));
     setLoading(false);
   }
 
@@ -75,7 +87,7 @@ export default function InventorySection() {
         >
           <span className={`${!currentTab ? '' : 'hidden'} animate-ping text-secondary`}>&bull;</span>
           <span className={`${!currentTab ? 'underline' : ''}`}>
-            Heros
+            Heroes
           </span>
         </button>
       </div>

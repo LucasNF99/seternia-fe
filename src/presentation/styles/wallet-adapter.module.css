@@ -27,7 +27,7 @@
 }
 
 .wallet-adapter-button:not([disabled]):hover {
-    @apply bg-stone-100 dark:bg-stone-800;
+    @apply bg-stone-800;
 }
 
 .wallet-adapter-button[disabled] {
@@ -202,7 +202,7 @@
     border-radius: 10px;
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
     flex: 1;
-    @apply bg-stone-100 dark:bg-stone-800;
+    @apply bg-stone-800;
 }
 
 .wallet-adapter-modal-wrapper .wallet-adapter-button {

@@ -9,12 +9,12 @@ export default function InventoryItem({
 }: IInventoryItemProps) {
 
   return (
-    <div className="flex items-center gap-1 flex-col">
-      <div className=" border-2 rounded-sm border-amber-500">
+    <div className="flex items-center gap-1 flex-col ">
+      <div className=" border-2  rounded-sm border-amber-500">
         <div className="border-b  rounded-sm w-40 h-40 max-h-40 border-orange-400">
-          <Image className="rounded-sm" src={itemImage} alt={alt} width={160} height={160} />
+          <Image src={itemImage} alt={alt} width={160} height={160} />
         </div>
-        <ul className="text-left p-1 text-xs flex flex-col gap-0.5">
+        <ul className="text-left p-1 text-xs flex flex-col gap-0.5 bg-main">
           <li>
             <p className="text-ellipsis text-left max-w-28 whitespace-nowrap overflow-hidden"><strong>Item:</strong> {alt}</p>
           </li>
