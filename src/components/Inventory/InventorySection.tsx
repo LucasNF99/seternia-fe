@@ -8,13 +8,13 @@ import Image from "next/image";
 import InventoryItem from "./InventoryItem";
 import LoadingIcon from "@/../public/icons/loading.svg";
 
-
 export default function InventorySection() {
   const { connection } = useConnection();
   const { publicKey } = useWallet();
   const [nfts, setNfts] = useState<(Nft | Sft | Metadata)[]>([]);
-  const [nftData, setNftData] = useState<{ image: string; name: string }[]>([]);
-  const [loading, setLoading] = useState(true);  // Estado de carregamento
+  const [nftData, setNftData] = useState<{ image: string; name: string; category: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentTab, setCurrentTab] = useState(false);
 
   async function getAllNfts() {
     if (!connection || !publicKey) {
@@ -22,7 +22,7 @@ export default function InventorySection() {
       return;
     }
 
-    setLoading(true);  // Inicia o carregamento
+    setLoading(true);
     const keypair = Keypair.generate();
 
     const metaplex = new Metaplex(connection);
@@ -33,36 +33,60 @@ export default function InventorySection() {
 
     setNfts(allNFTs);
 
-    // Fetch images and names
     const data = await Promise.all(
       allNFTs.map(async (nft) => {
         const response = await fetch(nft.uri);
         const metadata = await response.json();
         return {
-          image: metadata.image, // Get the image URL from the JSON
-          name: metadata.name,   // Get the name from the JSON
+          image: metadata.image,
+          name: metadata.name,
+          category: metadata.attributes?.find((attr: { trait_type: string; }) => attr.trait_type === 'Category')?.value || 'Items',
         };
       })
     );
 
     setNftData(data);
-    setLoading(false);  // Termina o carregamento
+    setLoading(false);
   }
 
   useEffect(() => {
     getAllNfts();
   }, [publicKey]);
 
+  const filteredNfts = nftData.filter(nft =>
+    currentTab ? nft.category === 'Items' : nft.category === 'Heros'
+  );
+
   return (
-    <section className="h-full w-full">
+    <section className="h-full w-full flex flex-col justify-center items-center">
+      <div className="flex gap-20 mb-6">
+        <button
+          className={'text-2xl w-20 h-9'}
+          type="button"
+          onClick={() => setCurrentTab(true)}
+        >
+          <span className={`${currentTab ? '' : 'hidden'} animate-ping text-secondary`}>&bull;</span>
+          <span className={`${currentTab ? 'underline' : ''}`}>Items</span>
+        </button>
+        <button
+          className={'text-2xl w-20 h-9'}
+          type="button"
+          onClick={() => setCurrentTab(false)}
+        >
+          <span className={`${!currentTab ? '' : 'hidden'} animate-ping text-secondary`}>&bull;</span>
+          <span className={`${!currentTab ? 'underline' : ''}`}>
+            Heros
+          </span>
+        </button>
+      </div>
       {loading ? (
-        <div className=" mx-auto  h-full w-full flex items-center justify-center max-w-3xl">
+        <div className="mx-auto h-full w-full flex items-center justify-center max-w-3xl">
           <Image src={LoadingIcon} width={25} height={25} alt="loading" />
           <span className="ml-2">Loading...</span>
         </div>
       ) : (
-        <div className=" mx-auto grid grid-cols-5 gap-4 p-4 rounded-sm h-full bg-brown max-w-6xl max-h-[500px] overflow-x-auto">
-          {nftData.map((nft, index) => (
+        <div className="mx-auto grid grid-cols-3 lg:grid-cols-5 gap-4 p-4 rounded-sm h-full bg-brown max-w-6xl max-h-[500px] overflow-x-auto">
+          {filteredNfts.map((nft, index) => (
             <InventoryItem
               key={index}
               itemImage={nft.image}
