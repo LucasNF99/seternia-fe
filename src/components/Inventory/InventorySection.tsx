@@ -14,7 +14,7 @@ export default function InventorySection() {
   const [nfts, setNfts] = useState<(Nft | Sft | Metadata)[]>([]);
   const [nftData, setNftData] = useState<{ image: string; name: string; category: string }[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentTab, setCurrentTab] = useState(false);
+  const [currentTab, setCurrentTab] = useState(true);
 
   async function getAllNfts() {
     if (!connection || !publicKey) {
