@@ -6,7 +6,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import InventoryItem from "./InventoryItem";
-import LoadingIcon from "@/../public/icons/loading.svg";
+import LoadingIcon from "@/../public/icons/only_rune.gif";
 
 export default function InventorySection() {
   const { connection } = useConnection();
