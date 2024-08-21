@@ -5,6 +5,7 @@ export enum Pages {
     MAP = "/map",
     LEADERBOARD = "/leaderboard",
     PROFILE = "/profile",
+    SCROLLS = "/scrolls",
     INVENTORY = "/inventory",
     BONK_RUINS = "/bonk-ruins",
     TOWN_HALL = "/town-hall",

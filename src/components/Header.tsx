@@ -1,37 +1,42 @@
+"use client";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Logo from "@/../public/logo.svg";
-import { Pages } from "@/presentation/enums/pages";
 import { useSetRecoilState } from "recoil";
-import { quickSelectAtom } from "@/presentation/atoms/quickSelectAtom";
 import Image from "next/image";
+import { useState } from "react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/16/solid";
+import { Pages } from "@/presentation/enums/pages";
+import { quickSelectAtom } from "@/presentation/atoms/quickSelectAtom";
+import Logo from "@/../public/logo.svg";
+import ScrollIcon from "@/../public/icons/scroll-icon.png";
 
 export default function Header() {
   const pathname = usePathname();
   const setQuickSelectState = useSetRecoilState(quickSelectAtom);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuLinks = [
     {
       link: Pages.MAP,
-      text: 'Map'
+      text: "Map",
     },
     {
       link: null,
-      text: 'Locations',
-      onClick: () => setQuickSelectState({ open: true })
+      text: "Locations",
+      onClick: () => setQuickSelectState({ open: true }),
     },
     {
       link: Pages.LEADERBOARD,
-      text: 'Leaderboard'
+      text: "Leaderboard",
     },
     {
       link: Pages.PROFILE,
-      text: 'Profile'
+      text: "Profile",
     },
     {
       link: Pages.INVENTORY,
-      text: 'Inventory'
+      text: "Inventory",
     },
   ];
 
@@ -41,25 +46,25 @@ export default function Header() {
         <Link href={Pages.HOME}>
           <Image src={Logo} width={60} height={20} alt="Seternia Realms" />
         </Link>
-        <div>
-          <ul className="flex items-center gap-3">
+
+
+        <div
+          className={`fixed top-0 right-0 h-full w-3/4 bg-main z-50 transform transition-transform duration-300 ease-in-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+            } md:static md:transform-none md:w-auto md:flex md:flex-row items-center gap-3`}
+        >
+          <ul className="flex flex-col md:flex-row items-center gap-3 mt-20 md:mt-0">
             {menuLinks.map((item, index) => (
               <li key={index}>
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={` 
-                      hover:underline
-                      ${pathname === item.link ? 'text-secondary' : ''}`
-                    }
+                    className={`hover:underline ${pathname === item.link ? "text-secondary" : ""
+                      }`}
                   >
                     {item.text}
                   </Link>
                 ) : (
-                  <button
-                    onClick={item.onClick}
-                    className="hover:underline"
-                  >
+                  <button onClick={item.onClick} className="hover:underline">
                     {item.text}
                   </button>
                 )}
@@ -67,7 +72,24 @@ export default function Header() {
             ))}
           </ul>
         </div>
-        <WalletMultiButton />
+
+        <div className="flex items-center gap-4">
+          <Link href={Pages.SCROLLS} className="relative rounded-sm p-1 bg-brown border-gradient scroll-button">
+            <Image src={ScrollIcon} width={20} height={20} alt="Scrolls" />
+          </Link>
+
+
+          <div className="hidden md:block">
+            <WalletMultiButton />
+          </div>
+        </div>
+
+        <div className="md:hidden z-[100]">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <XMarkIcon width={24} /> : <Bars3Icon width={24} />}
+          </button>
+        </div>
+
       </div>
     </header>
   );
