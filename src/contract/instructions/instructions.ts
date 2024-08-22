@@ -4,7 +4,7 @@ import { TransactionInstruction,PublicKey } from "@solana/web3.js";
 
 import { type Provider ,Program ,Idl} from '@coral-xyz/anchor';
 import * as instructions from "./types";
-import { SeterniaIdl ,type Seternia,SimpleMintIdl,type SimpleMint } from '../program';
+import { SeterniaIdl ,type Seternia,SimpleMintIdl,type SimpleMint } from '../../program/idls';
 
 const programId = new PublicKey('7fHyCXb2goZ8cGDm8CqY9rogsZm4FySD2QSznEUJHZvb');
 

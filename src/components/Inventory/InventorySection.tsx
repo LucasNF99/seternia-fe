@@ -70,34 +70,31 @@ export default function InventorySection() {
   );
 
   return (
-    <section className="h-full w-full flex flex-col justify-center items-center">
-      <div className="flex gap-20 mb-6">
+    <section className="w-full flex flex-col justify-center  mt-4">
+      <div className="flex gap-20 mb-1 border-b-2">
         <button
-          className={'text-2xl w-20 h-9'}
+          className={`text-2xl w-20 h-9 ml-10 border-b-4 ${currentTab ? 'border-b-4 border-secondary' : 'border-brown'}`}
           type="button"
           onClick={() => setCurrentTab(true)}
         >
-          <span className={`${currentTab ? '' : 'hidden'} animate-ping text-secondary`}>&bull;</span>
-          <span className={`${currentTab ? 'underline' : ''}`}>Items</span>
+          <span>Items</span>
         </button>
         <button
-          className={'text-2xl w-20 h-9'}
+          className={`text-2xl w-20 h-9 border-b-4 ${!currentTab ? 'border-b-4 border-secondary' : 'border-brown'}`}
           type="button"
           onClick={() => setCurrentTab(false)}
         >
-          <span className={`${!currentTab ? '' : 'hidden'} animate-ping text-secondary`}>&bull;</span>
-          <span className={`${!currentTab ? 'underline' : ''}`}>
-            Heroes
-          </span>
+          Heroes
         </button>
       </div>
-      {loading ? (
+      {loading && (
         <div className="mx-auto h-full w-full flex items-center justify-center max-w-3xl">
-          <Image src={LoadingIcon} width={25} height={25} alt="loading" />
+          <Image src={LoadingIcon} width={25} height={25} alt="loading" unoptimized loading="lazy" />
           <span className="ml-2">Loading...</span>
         </div>
-      ) : (
-        <div className="mx-auto grid grid-cols-3 lg:grid-cols-5 gap-4 p-4 rounded-sm h-full bg-brown max-w-6xl max-h-[500px] overflow-x-auto">
+      )}
+      {!loading && filteredNfts.length > 0 && (
+        <div className=" mx-auto grid grid-cols-3 lg:grid-cols-5 gap-4 rounded-sm h-full max-w-6xl max-h-[500px] overflow-x-auto">
           {filteredNfts.map((nft, index) => (
             <InventoryItem
               key={index}
@@ -105,6 +102,11 @@ export default function InventorySection() {
               alt={nft.name}
             />
           ))}
+        </div>
+      )}
+      {!loading && filteredNfts.length == 0 && (
+        <div className=" mx-auto max-w-6xl max-h-[500px] overflow-x-auto">
+          <p className="mt-8">No {currentTab ? 'items' : 'heroes'} found.</p>
         </div>
       )}
     </section>

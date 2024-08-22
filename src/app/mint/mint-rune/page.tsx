@@ -33,9 +33,9 @@ export default function QuickSelect() {
   return (
     <div className="flex items-center flex-col justify-center flex-1 bg-mint bg-center bg-cover">
       <Link href={Pages.STEPS}>
-        <Image className="" alt="Mint Hero" src={mint} />
+        <Image className="" alt="Mint Hero" src={mint} loading='lazy' />
       </Link>
-      <Image className=" rounded-lg mb-2 " width={350} src={rune} alt="Rune" />
+      <Image className=" rounded-lg mb-2 " width={350} src={rune} alt="Rune" loading='lazy' />
     </div>
   );
 }

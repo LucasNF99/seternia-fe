@@ -75,7 +75,7 @@ export default function Header() {
 
         <div className="flex items-center gap-4">
           <Link href={Pages.SCROLLS} className="relative rounded-sm p-1 bg-brown border-gradient scroll-button">
-            <Image src={ScrollIcon} width={20} height={20} alt="Scrolls" />
+            <Image src={ScrollIcon} width={20} height={20} alt="Scrolls" loading="lazy" />
           </Link>
 
 

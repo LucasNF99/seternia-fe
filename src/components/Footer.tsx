@@ -25,16 +25,18 @@ export default function Footer() {
                 height={16}
                 alt="Documentation"
                 src={DocumentationIcon}
+                loading='lazy'
               />
             </Link>
           </li>
           <li>
-            <Link href="https://discord.gg/rcMDQhDFam" target="_blank">
+            <Link href="#" target="_blank">
               <Image
                 width={16}
                 height={16}
                 alt="Discord"
                 src={DiscordIcon}
+                loading='lazy'
               />
             </Link>
           </li>
@@ -45,6 +47,7 @@ export default function Footer() {
                 height={16}
                 alt="Twitter"
                 src={XIcon}
+                loading='lazy'
               />
             </Link>
           </li>

@@ -37,10 +37,10 @@ export function BaseModal({ onClose, isOpen, children, bgColor, wSize, wHeight }
         >
           <header className='flex justify-between'>
             <button type='button'>
-              <Image width={30} src={questionButton} alt='Question button' />
+              <Image width={30} src={questionButton} alt='Question button' loading='lazy' />
             </button>
             <button type='button' onClick={onClose}>
-              <Image width={30} src={closeButton} alt='Close modal button' />
+              <Image width={30} src={closeButton} alt='Close modal button' loading='lazy' />
             </button>
           </header>
           {children}
