@@ -21,7 +21,7 @@ export default function MintScrollButton() {
         connection,
       );
 
-      const explorerUrl = `https://explorer.solana.com/tx/${tx}?cluster=devnet`;
+      const explorerUrl = `https://explorer.sonic.game/tx/${tx}?cluster=custom&customUrl=https%3A%2F%2Fdevnet.sonic.game`;
 
       toast.success(
         <a href={explorerUrl} className="underline" target="_blank" rel="noopener noreferrer">

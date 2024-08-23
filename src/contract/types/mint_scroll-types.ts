@@ -5,7 +5,18 @@ export type ScrollMintNFTArgs = {
   id: string | number | BN | Uint8Array | number[] | Buffer;
   bump:number
 }
-
+export interface TreasureScroll {
+  admin: PublicKey;
+  name:String;
+  uri:String;
+  symbol:String;
+  supply: BN,
+  mints: BN;
+  time: BN,
+  solFee:BN,
+  mainCollection:PublicKey,
+  playByCollection:BN
+}
 export interface Position {
   admin: PublicKey; 
   name:String; 

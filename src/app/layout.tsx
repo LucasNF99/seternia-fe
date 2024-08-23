@@ -27,7 +27,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const endpoint = web3.clusterApiUrl("devnet");
+  const endpoint = 'https://devnet.sonic.game';
   const wallets = useMemo(() => [
     new PhantomWalletAdapter(),
     new SolflareWalletAdapter()

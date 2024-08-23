@@ -4,6 +4,7 @@ import { AnchorWallet } from "@solana/wallet-adapter-react";
 import BN from "bn.js";
 import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { getScrollMintProgram } from "./instructions";
+import { TreasureScroll } from "./types";
 const info = {
   TOKEN_METADATA_PROGRAM_ID: new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"),
 }
@@ -18,19 +19,18 @@ export const MintScrollTransaction = async (
     return;
   }
 
-  // Configura o Provider
   const provider = new AnchorProvider(connection, wallet, {});
-  const program = await getScrollMintProgram(provider);
+  const program = getScrollMintProgram(provider);
 
-  // Deriva várias chaves públicas usadas no processo
   const [TreasuryKey, bump] = await PublicKey.findProgramAddressSync(
     [Buffer.from("TRESURE_SEED")],
     program.programId
   );
-  const treasury_data = await program.account.treasure.fetch(TreasuryKey);
+
+  const treasury_data = await program.account.treasure.fetch(TreasuryKey) as TreasureScroll;
 
   const mints = treasury_data.mints.add(new BN(1));
-  const [MintKey] = await PublicKey.findProgramAddressSync(
+  const [MintKey] = PublicKey.findProgramAddressSync(
     [Buffer.from("mint"), Buffer.from(mints.toArray("le", 8))],
     program.programId
   );
@@ -41,15 +41,15 @@ export const MintScrollTransaction = async (
   );
 
   // Deriva as chaves públicas de Collection, Metadata, e Master Edition
-  const [CollectionKey] = await PublicKey.findProgramAddressSync(
+  const [CollectionKey] = PublicKey.findProgramAddressSync(
     [Buffer.from("collection")],
     program.programId
   );
-  const [CmetadataAddress] = await PublicKey.findProgramAddressSync(
+  const [CmetadataAddress] = PublicKey.findProgramAddressSync(
     [Buffer.from("metadata"), info.TOKEN_METADATA_PROGRAM_ID.toBuffer(), CollectionKey.toBuffer()],
     info.TOKEN_METADATA_PROGRAM_ID
   );
-  const [CmasterEdition] = await PublicKey.findProgramAddressSync(
+  const [CmasterEdition] = PublicKey.findProgramAddressSync(
     [
       Buffer.from("metadata"),
       info.TOKEN_METADATA_PROGRAM_ID.toBuffer(),
@@ -58,11 +58,11 @@ export const MintScrollTransaction = async (
     ],
     info.TOKEN_METADATA_PROGRAM_ID
   );
-  const [metadataAddress] = await PublicKey.findProgramAddressSync(
+  const [metadataAddress] = PublicKey.findProgramAddressSync(
     [Buffer.from("metadata"), info.TOKEN_METADATA_PROGRAM_ID.toBuffer(), MintKey.toBuffer()],
     info.TOKEN_METADATA_PROGRAM_ID
   );
-  const [masterEdition] = await PublicKey.findProgramAddressSync(
+  const [masterEdition] = PublicKey.findProgramAddressSync(
     [
       Buffer.from("metadata"),
       info.TOKEN_METADATA_PROGRAM_ID.toBuffer(),
@@ -71,7 +71,7 @@ export const MintScrollTransaction = async (
     ],
     info.TOKEN_METADATA_PROGRAM_ID
   );
-  const [delegate] = await PublicKey.findProgramAddressSync(
+  const [delegate] = PublicKey.findProgramAddressSync(
     [
       Buffer.from("metadata"),
       info.TOKEN_METADATA_PROGRAM_ID.toBuffer(),
