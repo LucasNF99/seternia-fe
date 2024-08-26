@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 }
 export default function Scrolls() {
   return (
-    <main className="flex-1  bg-brown">
+    <main className="flex-1  bg-gradient-to-b from-dark1 to-dark2">
       <ScrollsSection />
     </main>
   );

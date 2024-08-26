@@ -14,7 +14,9 @@ const config: Config = {
         secondary: '#EB8C2A',
         tertiary: '#754515',
         yell: '#FFE663',
-        brown: '#6B3C24'
+        brown: '#6B3C24',
+        dark1: '#161128',
+        dark2: '#030106',
       },
       backgroundImage: {
         'town-hall': "url('/backgrounds/bg-town-hall.png')",

@@ -3,8 +3,9 @@ import { Connection, PublicKey, Transaction, ComputeBudgetProgram } from "@solan
 import { AnchorWallet } from "@solana/wallet-adapter-react";
 import BN from "bn.js";
 import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { getScrollMintProgram } from "./instructions";
+import { getScrollBurnProgram, getScrollMintProgram } from "./instructions";
 import { TreasureScroll } from "./types";
+
 const info = {
   TOKEN_METADATA_PROGRAM_ID: new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"),
 }
@@ -13,7 +14,7 @@ export const MintScrollTransaction = async (
   wallet: AnchorWallet,
   connection: Connection,
 ) => {
-  // Verifica se a carteira e a conexão estão configuradas
+
   if (!wallet.publicKey || !connection) {
     console.log("Warning: Wallet not connected");
     return;
@@ -22,7 +23,7 @@ export const MintScrollTransaction = async (
   const provider = new AnchorProvider(connection, wallet, {});
   const program = getScrollMintProgram(provider);
 
-  const [TreasuryKey, bump] = await PublicKey.findProgramAddressSync(
+  const [TreasuryKey, bump] = PublicKey.findProgramAddressSync(
     [Buffer.from("TRESURE_SEED")],
     program.programId
   );
@@ -82,11 +83,9 @@ export const MintScrollTransaction = async (
     info.TOKEN_METADATA_PROGRAM_ID
   );
 
-  // Cria uma nova transação
   const transaction = new Transaction();
   const computeLimit = ComputeBudgetProgram.setComputeUnitLimit({ units: 800_000 });
 
-  // Adiciona as instruções de mint à transação
   const mintIx = await program.methods.mint(mints, bump).accounts({
     payer: wallet.publicKey,
     admin: treasury_data.admin,
@@ -109,7 +108,6 @@ export const MintScrollTransaction = async (
   transaction.add(mintIx).add(computeLimit);
 
   try {
-    // Configura a transação para assinatura e envio
     transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
     transaction.feePayer = wallet.publicKey;
 
@@ -134,3 +132,90 @@ export const MintScrollTransaction = async (
 
   return null;
 };
+
+
+export const BurnScrollTransaction = async (
+  wallet: AnchorWallet,
+  connection: Connection,
+  scrollId: number
+) => {
+  const id = new BN(scrollId);
+  if (!wallet.publicKey || !connection) {
+    console.log("Warning: Wallet not connected");
+    return;
+  }
+
+
+  const provider = new AnchorProvider(connection, wallet, {});
+  const program = getScrollBurnProgram(provider);
+
+  const [TreasuryKey] = PublicKey.findProgramAddressSync(
+    [Buffer.from("TRESURE_SEED")],
+    program.programId
+  );
+
+  const [PositionKey] = PublicKey.findProgramAddressSync(
+    [Buffer.from("endless"), wallet.publicKey.toBuffer()],
+    program.programId
+  );
+
+  const [MintKey] = PublicKey.findProgramAddressSync(
+    [Buffer.from("mint"),Buffer.from(id.toArray("le", 8))],
+    program.programId
+  );
+
+  const [metadataAddress] = PublicKey.findProgramAddressSync(
+    [Buffer.from("metadata"),info.TOKEN_METADATA_PROGRAM_ID.toBuffer(),MintKey.toBuffer()],
+    info.TOKEN_METADATA_PROGRAM_ID
+  );
+
+  const MintTokenAccount = await getAssociatedTokenAddress(
+    MintKey,
+    wallet.publicKey
+  );
+
+  const transaction = new Transaction();
+  const computeLimit = ComputeBudgetProgram.setComputeUnitLimit({ units: 800_000 });
+
+  const mintIx = await program.methods.ticket().accounts({
+    payer: wallet.publicKey,
+    treasure: TreasuryKey,
+    position: PositionKey,
+    mint: MintKey,
+    associated: MintTokenAccount,
+    metadata: metadataAddress,
+    associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+    rent: web3.SYSVAR_RENT_PUBKEY,
+    systemProgram: web3.SystemProgram.programId,
+    tokenProgram: TOKEN_PROGRAM_ID,
+    metadataProgram:  info.TOKEN_METADATA_PROGRAM_ID
+
+  }).instruction();
+
+  transaction.add(mintIx).add(computeLimit);
+  
+  try {
+    transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+    transaction.feePayer = wallet.publicKey;
+
+    if (wallet.signTransaction) {
+      const signedTx = await wallet.signTransaction(transaction);
+      const serializedTx = signedTx.serialize();
+      const signature = await connection.sendRawTransaction(serializedTx, { skipPreflight: false });
+
+      const blockhash = await connection.getLatestBlockhash();
+      await connection.confirmTransaction({
+        signature,
+        blockhash: blockhash.blockhash,
+        lastValidBlockHeight: blockhash.lastValidBlockHeight
+      }, "processed");
+
+      console.log("Successfully burned NFT. Signature: ", signature);
+      return signature;
+    }
+  } catch (error) {
+    console.error(error)
+    return error
+  }
+  return null
+}

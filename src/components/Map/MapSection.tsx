@@ -14,22 +14,18 @@ export default function MapSection() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    // Carrega a imagem
     const img = new Image();
     img.src = mapSrc.src;
     img.onload = () => {
       setImage(img);
 
-      // Aumenta a largura do canvas, mas mantém a altura da imagem
-      canvas.width = img.width; // Aumenta a largura do canvas
-      canvas.height = img.height; // Mantém a altura da imagem
-
-      // Desenha a imagem no canvas
+      canvas.width = img.width;
+      canvas.height = img.height;
       ctx.drawImage(img, 0, 0, img.width, img.height);
 
       setClickableAreas([
-        { x: 50, y: 50, width: 100, height: 100, action: () => alert('Área 1 clicada!') },
-        { x: 200, y: 150, width: 150, height: 100, action: () => alert('Área 2 clicada!') }
+        { x: 50, y: 50, width: 100, height: 100, action: () => console.log('here1') },
+        { x: 200, y: 150, width: 150, height: 100, action: () => console.log('here2') }
       ]);
     };
   }, []);
@@ -40,7 +36,6 @@ export default function MapSection() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    // Verifica se o clique está dentro de uma área clicável
     clickableAreas.forEach(area => {
       if (
         x >= area.x &&
@@ -48,7 +43,7 @@ export default function MapSection() {
         y >= area.y &&
         y <= area.y + area.height
       ) {
-        area.action(); // Executa a ação associada à área
+        area.action();
       }
     });
   }
@@ -75,7 +70,7 @@ export default function MapSection() {
         <canvas
           ref={canvasRef}
           onClick={handleClick}
-          style={{ cursor: "grabbing", display: "block" }} // Remove espaços em branco extras
+          style={{ cursor: "grabbing", display: "block" }}
           className="overflow-hidden w-[1000px]"
         />
       </motion.div>

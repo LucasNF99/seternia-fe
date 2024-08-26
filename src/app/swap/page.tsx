@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 }
 export default function Swap() {
   return (
-    <main className="flex flex-1 justify-center items-center bg-center bg-cover bg-town-hall">
+    <main className="flex flex-1 justify-center items-center bg-center bg-cover bg-town-hall py-5">
       <SwapCard />
     </main>
   );

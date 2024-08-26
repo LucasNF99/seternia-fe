@@ -45,3 +45,18 @@ export interface MintScrollNFTAccount {
   tokenProgram: PublicKey;
   metadataProgram: PublicKey;
 }
+
+
+export interface BurnScrollNFTAccount {
+  payer: PublicKey,
+  treasure: PublicKey,
+  position: PublicKey,
+  mint: PublicKey,
+  associated: PublicKey,
+  metadata: PublicKey,
+  associatedTokenProgram: PublicKey,
+  rent: PublicKey,
+  systemProgram: PublicKey,
+  tokenProgram: PublicKey,
+  metadataProgram: PublicKey
+}

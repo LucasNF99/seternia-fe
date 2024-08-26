@@ -1,12 +1,19 @@
 import { Idl, Program, Provider } from "@coral-xyz/anchor";
 import { PublicKey, TransactionInstruction } from "@solana/web3.js";
-import { MintScrollIdl, type ScrollMint } from '../../program';
-import * as instructions from "../types/mint_scroll-types";
+import { ScrollIdl, type ScrollMint } from '../../program';
+import * as instructions from "../types/scroll-types";
 
 const programId = new PublicKey('2DQnTHc2NGbXQZBtKTnkQcBNNVsGaTctwEMWJ6c9gQYx');
 
 export const getScrollMintProgram = (provider: Provider) => new Program(
-  MintScrollIdl as Idl,
+  ScrollIdl as Idl,
+  programId,
+  provider
+) as unknown as Program<ScrollMint>;
+
+
+export const getScrollBurnProgram = (provider: Provider) => new Program(
+  ScrollIdl as Idl,
   programId,
   provider
 ) as unknown as Program<ScrollMint>;
@@ -39,5 +46,29 @@ export async function MintScroll(
       tokenProgram: accounts.tokenAccount,
       metadataProgram: accounts.metadataProgram
     }).instruction();
+    return ix;
+}
+
+
+export async function BurnScroll(
+    accounts: instructions.BurnScrollNFTAccount,
+    provider: Provider
+): Promise<TransactionInstruction> {
+    const scrollProgram = getScrollBurnProgram(provider);
+    const ix = await scrollProgram.methods.ticket().accounts(
+      {
+      payer: accounts.payer,
+      treasure: accounts.treasure,
+      position: accounts.position,
+      mint: accounts.mint,
+      associated: accounts.associated,
+      metadata: accounts.metadata,
+      associatedTokenProgram: accounts.associatedTokenProgram,
+      rent: accounts.rent,
+      systemProgram: accounts.systemProgram,
+      tokenProgram: accounts.tokenProgram,
+      metadataProgram: accounts.metadataProgram
+    }
+    ).instruction();
     return ix;
 }

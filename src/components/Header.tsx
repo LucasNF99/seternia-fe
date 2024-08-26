@@ -41,7 +41,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="py-2 bg-main">
+    <header className="py-6 bg-main">
       <div className="container mx-auto flex items-center justify-between px-4">
         <Link href={Pages.HOME}>
           <Image src={Logo} width={60} height={20} alt="Seternia Realms" />

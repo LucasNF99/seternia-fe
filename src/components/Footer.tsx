@@ -1,19 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
-import DocumentationIcon from "@/../public/icons/book.png";
-import DiscordIcon from "@/../public/icons/discord.png";
-import XIcon from "@/../public/icons/x.png";
+import DocumentationIcon from "@/../public/icons/book.svg";
+import DiscordIcon from "@/../public/icons/discord.svg";
+import XIcon from "@/../public/icons/xicon.svg";
 
 
 export default function Footer() {
   return (
     <footer className=" sticky bg-main ">
-      <div className="container px-4 mx-auto flex items-center justify-between py-1">
+      <div className="container px-4 mx-auto flex items-center justify-between py-6">
 
-        <p className="relative flex items-start text-green-500">
-          <span className=" absolute flex h-1 w-1 -left-1">
+        <p className=" flex items-center gap-1 text-green-500">
+          <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-1 w-1 bg-green-500"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
           </span>
           Alpha is live
         </p>
@@ -21,8 +21,8 @@ export default function Footer() {
           <li>
             <Link href="https://docs.seternia.com/seternia-realms" target="_blank">
               <Image
-                width={16}
-                height={16}
+                width={24}
+                height={24}
                 alt="Documentation"
                 src={DocumentationIcon}
                 loading='lazy'
@@ -32,8 +32,8 @@ export default function Footer() {
           <li>
             <Link href="#" target="_blank">
               <Image
-                width={16}
-                height={16}
+                width={24}
+                height={24}
                 alt="Discord"
                 src={DiscordIcon}
                 loading='lazy'
@@ -43,8 +43,8 @@ export default function Footer() {
           <li>
             <Link href="https://x.com/SeterniaRealms" target="_blank">
               <Image
-                width={16}
-                height={16}
+                width={24}
+                height={24}
                 alt="Twitter"
                 src={XIcon}
                 loading='lazy'

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 }
 export default function Map() {
   return (
-    <main className="container mx-auto flex-1">
+    <main className=" flex-1 bg-gradient-to-b from-dark1 to-dark2">
       <MapSection />
     </main>
   );
