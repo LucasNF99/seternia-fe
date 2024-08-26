@@ -20,7 +20,7 @@ export default function MintScrollButton() {
       return;
     }
 
-    const programId = new PublicKey("A46fcoW98cryMMDx6oBSa7hz4c1L4g7pp6Vy9vvzfGWK");
+    const programId = new PublicKey("8WcJr3NNoA5maW51c4ABn3sg8UB1nGaUwtR5VSzuhZdY");
     const metaplex = Metaplex.make(connection).use(walletAdapterIdentity(wallet));
 
     try {
@@ -59,14 +59,17 @@ export default function MintScrollButton() {
       );
 
       const explorerUrl = `https://explorer.sonic.game/tx/${tx}?cluster=custom&customUrl=https%3A%2F%2Fdevnet.sonic.game`;
+      console.log(tx)
 
       toast.success(
         <a href={explorerUrl} className="underline" target="_blank" rel="noopener noreferrer">
           View transaction
         </a>
       );
+
     } catch (err) {
-      console.log(err);
+      toast.error('Transaction failed.');
+      return;
     }
   }
 

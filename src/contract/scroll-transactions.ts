@@ -1,5 +1,5 @@
 import { AnchorProvider, Program, web3 } from "@coral-xyz/anchor";
-import { Connection, PublicKey, Transaction, ComputeBudgetProgram } from "@solana/web3.js";
+import { Connection, PublicKey, Transaction, ComputeBudgetProgram, SendTransactionError } from "@solana/web3.js";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
 import BN from "bn.js";
 import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token";
@@ -29,7 +29,8 @@ export const MintScrollTransaction = async (
   );
 
   const treasury_data = await program.account.treasure.fetch(TreasuryKey) as TreasureScroll;
-
+  console.log(treasury_data.solFee.toNumber()/(10**9));
+  
   const mints = treasury_data.mints.add(new BN(1));
   const [MintKey] = PublicKey.findProgramAddressSync(
     [Buffer.from("mint"), Buffer.from(mints.toArray("le", 8))],
@@ -41,7 +42,6 @@ export const MintScrollTransaction = async (
     wallet.publicKey
   );
 
-  // Deriva as chaves públicas de Collection, Metadata, e Master Edition
   const [CollectionKey] = PublicKey.findProgramAddressSync(
     [Buffer.from("collection")],
     program.programId
@@ -107,7 +107,7 @@ export const MintScrollTransaction = async (
 
   transaction.add(mintIx).add(computeLimit);
 
-  try {
+   try {
     transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
     transaction.feePayer = wallet.publicKey;
 
@@ -117,17 +117,24 @@ export const MintScrollTransaction = async (
       const signature = await connection.sendRawTransaction(serializedTx, { skipPreflight: false });
 
       const blockhash = await connection.getLatestBlockhash();
-      await connection.confirmTransaction({
-        signature,
-        blockhash: blockhash.blockhash,
-        lastValidBlockHeight: blockhash.lastValidBlockHeight
-      }, "processed");
+      await connection.confirmTransaction(
+        {
+          signature,
+          blockhash: blockhash.blockhash,
+          lastValidBlockHeight: blockhash.lastValidBlockHeight,
+        },
+        "processed"
+      );
 
       console.log("Successfully minted and activated NFT. Signature: ", signature);
       return signature;
     }
   } catch (error) {
-    console.log("Error in minting and activating NFT transaction", error);
+    if (error instanceof SendTransactionError) {
+      throw new Error(`Transaction failed: ${error.message}`);
+    } else {
+      console.log("Error in minting and activating NFT transaction", error);
+    }
   }
 
   return null;
@@ -144,7 +151,6 @@ export const BurnScrollTransaction = async (
     console.log("Warning: Wallet not connected");
     return;
   }
-
 
   const provider = new AnchorProvider(connection, wallet, {});
   const program = getScrollBurnProgram(provider);
@@ -214,7 +220,6 @@ export const BurnScrollTransaction = async (
       return signature;
     }
   } catch (error) {
-    console.error(error)
     return error
   }
   return null

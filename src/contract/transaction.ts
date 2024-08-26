@@ -9,7 +9,7 @@ import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js"
 import BN from "bn.js";
 import * as anchor from '@project-serum/anchor';
 const info = {
-  TOKEN_METADATA_PROGRAM_ID: new PublicKey("2DQnTHc2NGbXQZBtKTnkQcBNNVsGaTctwEMWJ6c9gQYx"),
+  TOKEN_METADATA_PROGRAM_ID: new PublicKey("EQtJRtAHKJRNUGRUnxvqwBARLw7ktrFuZxAQmmXaPkZm"),
   RuneKey: new PublicKey("3eDcm2adhJ9KrJtdmh9K6jjoH3UDq2psgWPTcw7fBrZd"),
 }
 

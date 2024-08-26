@@ -53,7 +53,6 @@ export default function MintSection() {
     }
   };
   const handleMint = async () => {
-    console.log(formInfo);
     if (!wallet || !connection) {
       console.error("Wallet is not connected");
       return;
@@ -72,7 +71,6 @@ export default function MintSection() {
         new BN(1)
       );
       if (tx) {
-        console.log(tx)
         const explorerUrl = `https://explorer.solana.com/tx/${tx}?cluster=devnet`;
 
         toast.success(
@@ -83,9 +81,6 @@ export default function MintSection() {
       } else {
         alert("Error in Mint NFT trasnaction")
       }
-      /*} catch (error) {
-        console.log("Input incorrect")
-      }*/
       console.log(formInfo)
     }
   }
