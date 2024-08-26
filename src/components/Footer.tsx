@@ -8,7 +8,7 @@ import XIcon from "@/../public/icons/xicon.svg";
 export default function Footer() {
   return (
     <footer className=" sticky bg-main ">
-      <div className="container px-4 mx-auto flex items-center justify-between py-6">
+      <div className="container px-4 mx-auto flex items-center justify-between py-5">
 
         <p className=" flex items-center gap-1 text-green-500">
           <span className="relative flex h-2 w-2">

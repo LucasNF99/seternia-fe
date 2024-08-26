@@ -31,6 +31,10 @@ export default function Header() {
       text: "Leaderboard",
     },
     {
+      link: Pages.REWARDS,
+      text: "Rewards",
+    },
+    {
       link: Pages.PROFILE,
       text: "Profile",
     },
@@ -41,10 +45,10 @@ export default function Header() {
   ];
 
   return (
-    <header className="py-6 bg-main">
+    <header className="min-h-[78px] bg-main flex items-center">
       <div className="container mx-auto flex items-center justify-between px-4">
         <Link href={Pages.HOME}>
-          <Image src={Logo} width={60} height={20} alt="Seternia Realms" />
+          <Image src={Logo} width={80} height={40} alt="Seternia Realms" />
         </Link>
 
 
@@ -58,7 +62,7 @@ export default function Header() {
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={`hover:underline ${pathname === item.link ? "text-secondary" : ""
+                    className={`hover:underline ${pathname === item.link ? "text-yell" : ""
                       }`}
                   >
                     {item.text}

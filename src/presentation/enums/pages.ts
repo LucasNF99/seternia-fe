@@ -4,6 +4,7 @@ export enum Pages {
     SWAP = "/swap",
     MAP = "/map",
     LEADERBOARD = "/leaderboard",
+    REWARDS = "/rewards",
     PROFILE = "/profile",
     SCROLLS = "/scrolls",
     INVENTORY = "/inventory",
