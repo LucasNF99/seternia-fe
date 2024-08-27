@@ -53,7 +53,7 @@ export default function Header() {
 
 
         <div
-          className={`fixed top-0 right-0 h-full w-3/4 bg-main z-50 transform transition-transform duration-300 ease-in-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+          className={`fixed top-0 right-0 h-full w-3/4 bg-main z-30 transform transition-transform duration-300 ease-in-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"
             } md:static md:transform-none md:w-auto md:flex md:flex-row items-center gap-3`}
         >
           <ul className="flex flex-col md:flex-row items-center gap-3 mt-20 md:mt-0">

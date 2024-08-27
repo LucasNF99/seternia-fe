@@ -34,7 +34,7 @@ export function QuickSelectModal() {
   return (
     <div
       className={classNames(
-        "fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 transition-opacity",
+        "fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 transition-opacity z-50",
         { hidden: !modalState.open }
       )}
     >
