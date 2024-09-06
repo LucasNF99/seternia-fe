@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 }
 export default function LeaderBoard() {
   return (
-    <main className="container mx-auto flex flex-1 items-center justify-center">
+    <main className="flex-1   bg-gradient-to-b from-dark1 to-dark2 flex flex-col justify-center items-center">
       <LeaderboardSection />
     </main>
   );
