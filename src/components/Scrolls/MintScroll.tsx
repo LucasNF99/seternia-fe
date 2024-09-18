@@ -12,15 +12,18 @@ export default function MintScrollButton() {
   const wallet = useAnchorWallet();
   const { connection } = useConnection();
   const { publicKey } = useWallet();
+  const [isLoading, setIsLoading] = useState(false)
   const [nftList, setNftList] = useState<(Nft | Sft | Metadata)[]>([]);
 
   async function fetchNFTsByCreatorAndOwner() {
+    setIsLoading(true)
     if (!wallet || !connection || !publicKey) {
       toast.error("Wallet or connection not available");
       return;
     }
-
-    const programId = new PublicKey("8WcJr3NNoA5maW51c4ABn3sg8UB1nGaUwtR5VSzuhZdY");
+    //81wpB74ga5Hih8yZ75XzdybSeQmbXcujX4omAwq83gUJ
+    //2mcKzFa5pQLc6VyUdyReduzahWspvh4sV8naAJCyyMRy
+    const programId = new PublicKey("2fFgY52cJdosQ6LBtLBfXE5e4QgTHR9eXzv4mRuQzd1X");
     const metaplex = Metaplex.make(connection).use(walletAdapterIdentity(wallet));
 
     try {
@@ -40,7 +43,11 @@ export default function MintScrollButton() {
         });
       });
       setNftList(nftsByCreatorAndOwner);
+      console.log(nftList)
+      setIsLoading(false)
     } catch (error) {
+      console.log(nftList)
+
       console.error("Error fetching NFTs by creator and owner:", error);
       toast.error("Failed to fetch NFTs");
     }
@@ -116,6 +123,7 @@ export default function MintScrollButton() {
 
   return (
     <div>
+      {isLoading && <p>Loading...</p>}
       <p className="text-center">You have <strong className="underline">{nftList.length}</strong> scrolls in your wallet!</p>
       <div className="flex justify-center mt-2 gap-20">
         <button onClick={() => handleBurnScroll()} className="transition-all flex flex-col items-center gap-2 hover:scale-105">
