@@ -293,6 +293,11 @@
           "isSigner": false
         },
         {
+          "name": "wallet",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "position",
           "isMut": true,
           "isSigner": false
@@ -306,7 +311,7 @@
       "args": [
         {
           "name": "floor",
-          "type": "u8"
+          "type": "u64"
         },
         {
           "name": "name",
@@ -354,6 +359,10 @@
             "type": "u64"
           },
           {
+            "name": "heroCollection",
+            "type": "publicKey"
+          },
+          {
             "name": "mainCollection",
             "type": "publicKey"
           },
@@ -395,7 +404,7 @@
           },
           {
             "name": "record",
-            "type": "u8"
+            "type": "u64"
           }
         ]
       }
@@ -484,6 +493,6 @@
     }
   ],
   "metadata": {
-    "address": "EQtJRtAHKJRNUGRUnxvqwBARLw7ktrFuZxAQmmXaPkZm"
+    "address": "GkUZfjXK2DuQLx5oSn6q3gsqHoWCGGru5eQbZgQyogLe"
   }
 }

@@ -3,7 +3,7 @@ import { PublicKey, TransactionInstruction } from "@solana/web3.js";
 import { ScrollIdl, type ScrollMint } from '../../program';
 import * as instructions from "../types/scroll-types";
 
-const programId = new PublicKey('EQtJRtAHKJRNUGRUnxvqwBARLw7ktrFuZxAQmmXaPkZm');
+const programId = new PublicKey('GkUZfjXK2DuQLx5oSn6q3gsqHoWCGGru5eQbZgQyogLe');
 
 export const getScrollMintProgram = (provider: Provider) => new Program(
   ScrollIdl as Idl,

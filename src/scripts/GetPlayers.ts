@@ -3,8 +3,8 @@ import * as web3 from '@solana/web3.js'
 import { PlayerInfo } from '@/models/PlayerInfo';
 
 
-// const RANKING_PROGRAM = 'EQtJRtAHKJRNUGRUnxvqwBARLw7ktrFuZxAQmmXaPkZm';
-const RANKING_PROGRAM = '';
+// const RANKING_PROGRAM = 'GkUZfjXK2DuQLx5oSn6q3gsqHoWCGGru5eQbZgQyogLe';
+const RANKING_PROGRAM = 'GkUZfjXK2DuQLx5oSn6q3gsqHoWCGGru5eQbZgQyogLe';
 
 export class PlayerInfoCoordinator {
   static accounts: web3.PublicKey[] = [];
@@ -54,14 +54,14 @@ export class PlayerInfoCoordinator {
     }
 
     const accounts = await connection.getMultipleAccountsInfo(paginatedPublicKeys);
-    const studentIntros = accounts.reduce((accum: PlayerInfo[], account) => {
-      const studentIntro = PlayerInfo.deserialize(account?.data);
-      if (!studentIntro) {
+    const playerInfos = accounts.reduce((accum: PlayerInfo[], account) => {
+      const playerInfo = PlayerInfo.deserialize(account?.data);
+      if (!playerInfo) {
         return accum;
       }
-      return [...accum, studentIntro];
+      return [...accum, playerInfo];
     }, []);
 
-    return studentIntros;
+    return playerInfos;
   }
 }

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function LeaderboardSection() {
   const { connection } = useConnection();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [playersInfo, setPlayersInfo] = useState<PlayerInfo[]>([]);
   const [searchInput, setSearchInput] = useState('');
@@ -24,7 +24,7 @@ export default function LeaderboardSection() {
       setPlayersInfo(fetchedPlayersInfo)
     });
   }, [connection, page, search]);
-
+  console.log(playersInfo[0])
 
   return (
     <section className="flex container mx-auto flex-col items-center flex-1 w-full px-2">
@@ -61,50 +61,20 @@ export default function LeaderboardSection() {
           <p>Wallet</p>
         </div>
         <ul className="flex flex-col gap-1 bg-purple-[#161128]  rounded-lg ">
-          {/* {playersInfo.map((studentInto: PlayerInfo, index: number) => ( */}
-          {/* // (studentInto.name && studentInto.position) && */}
-          <li className="grid  grid-cols-3 justify-items-center border-violet-950 border-2 p-2 rounded-lg">
+          {/* {playersInfo.map((info: PlayerInfo, index: number) => (
+            
+            (info.name && info.position) &&
+            <li key={index} className="grid  grid-cols-3 justify-items-center border-violet-950 border-2 p-2 rounded-lg">
 
-            <p className="bg-violet-950 self-center bg-opacity-70 px-2 rounded-lg"> Facho</p>
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">
-              20
-            </p>
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">
-              9oum15...
-            </p>
-          </li>
-
-          <li className="grid grid-cols-3 justify-items-center border-violet-950 border-2 p-2 rounded-lg">
-
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">Facho</p>
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">
-              20
-            </p>
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">
-              9oum15...
-            </p>
-          </li>
-          <li className="grid grid-cols-3 justify-items-center border-violet-950 border-2 p-2 rounded-lg">
-
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">Facho</p>
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">
-              20
-            </p>
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">
-              9oum15...
-            </p>
-          </li>
-          <li className="grid grid-cols-3 justify-items-center border-violet-950 border-2 p-2 rounded-lg">
-
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">Facho</p>
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">
-              20
-            </p>
-            <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">
-              9oum15...
-            </p>
-          </li>
-          {/* ))} */}
+              <p className="bg-violet-950 self-center bg-opacity-70 px-2 rounded-lg"> {info.name}</p>
+              <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">
+                20
+              </p>
+              <p className="bg-violet-950 bg-opacity-70 px-2 rounded-lg">
+                {info.position}
+              </p>
+            </li>
+          ))} */}
         </ul>
       </div>
     </section>
